@@ -1,7 +1,7 @@
 **Aadil Ahammad T**  
-**DevOps Engineer | Cloud Automation Specialist | 50% Cost Reduction Champion**  
+**DevOps Engineer | Cloud Automation | Cross Platform Deployment**  
 📍 Kochi, Kerala, India | 📞 +91-79944-66004 | 📧 aadilahammad86@gmail.com  
-🔗 [LinkedIn](https://www.linkedin.com/in/aadilahammad-t) | 🐙 [GitHub](https://github.com/aadilahammad86)  
+🔗 [LinkedIn](https://www.linkedin.com/in/aadilahammad-t) | 🔗 [GitHub](https://github.com/aadilahammad86)  
 
 ---
 
@@ -56,7 +56,7 @@ DevOps Engineer with **2+ years** of experience automating cloud infrastructure,
 
 **3. Secure Multi-Tier Network Architecture**  
 - Implemented firewall rules (Linux/Windows) and Nginx port-forwarding to isolate traffic, reducing attack surface by **40%**.  
-- *Tools*: Nginx, Wireshark, iptables.  
+- *Tools*: Nginx, iptables.  
 
 ---
 
