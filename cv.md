@@ -1,5 +1,3 @@
----
-
 ### **Aadil Ahammad T**  
 **🚀 DevOps Engineer | ☁️ Cloud Automation | 🔄 Cross-Platform Deployment**  
 📍 Kochi, Kerala, India | 📞 +91-79944-66004 | 📧 aadilahammad86@gmail.com  
