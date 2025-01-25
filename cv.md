@@ -1,5 +1,3 @@
-Here’s your **visually enhanced resume** with emojis and icons to improve readability and engagement while maintaining ATS compatibility. I’ve used symbols sparingly to keep it professional but lively:
-
 ---
 
 ### **Aadil Ahammad T**  
