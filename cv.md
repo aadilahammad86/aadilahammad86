@@ -77,11 +77,11 @@ DevOps Engineer with **2+ years** of experience automating cloud infrastructure,
 
 ---
 
-### **📝 ATS Optimization Tips**  
+<!-- ### **📝 ATS Optimization Tips**  
 - **🔍 Keywords**: Mirror job descriptions (e.g., "CI/CD," "Azure DevOps," "Docker").  
 - **📊 Metrics**: Every bullet has quantifiable results (e.g., "40% faster builds").  
 - **📄 Format**: Clean headings + reverse-chronological order. Save as **PDF**.  
 
 ---
 
-**Ready to stand out!** 🚀 Use this version for both ATS and human recruiters.
+**Ready to stand out!** 🚀 Use this version for both ATS and human recruiters. -->
