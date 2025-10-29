@@ -47,9 +47,15 @@
   "build": {
     "appId": "com.aadilahammad86.checklistapp",
     "productName": "ChecklistApp",
+    "directories": {
+      "output": "release-builds",
+      "buildResources": "build"
+    },
     "files": [
       "dist/**/*",
-      "main.cjs"
+      "main.cjs",
+      "preload.js",
+      "package.json"
     ],
     "win": {
       "target": "nsis"

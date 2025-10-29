@@ -3,7 +3,8 @@ import { Button } from "./components/ui/button";
 import { Card, CardContent } from "./components/ui/card";
 import { Checkbox } from "./components/ui/checkbox";
 import { Input } from "./components/ui/input";
-import { Sun, Moon, Laptop } from 'lucide-react';
+import { Sun, Moon, Laptop, Trash2 } from 'lucide-react';
+import { clsx} from 'clsx';
 
 export default function ChecklistApp() {
   const [tasks, setTasks] = useState([]);
@@ -18,6 +19,8 @@ export default function ChecklistApp() {
   // Default to 'system', which will be resolved by the useEffect hook
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'system');
 
+  // --- NEW STATE for selection ---
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
   // --- THEME EFFECT ---
   // This effect applies the theme and listens for system changes
   useEffect(() => {
@@ -71,13 +74,33 @@ export default function ChecklistApp() {
   }, [tasks]);
 
   const addTask = () => {
-    if (!newTask.trim()) return;
+    const trimmedTask = newTask.trim();
+    if (!trimmedTask || trimmedTask.length < 10) {
+      console.log("Task must be at least 10 characters long.");
+      return;
+    }
+    // if (!newTask.trim()) return;
     setTasks([...tasks, { id: Date.now(), text: newTask, done: false }]);
     setNewTask('');
   };
 
   const toggleTask = (id) => {
     setTasks(tasks.map(t => t.id === id ? { ...t, done: !t.done } : t));
+  };
+
+  // --- 2. DELETE LOGIC ADDED ---
+  const deleteTask = () => {
+    // Only delete if a task is actually selected
+    if (!selectedTaskId) return;
+    setTasks(tasks.filter(task => task.id !== selectedTaskId));
+    // Clear the selection after deleting
+    setSelectedTaskId(null);
+  };
+  
+  // --- 3. SELECTION LOGIC ADDED ---
+  const handleSelectTask = (taskId) => {
+    // If the clicked task is already selected, deselect it. Otherwise, select it.
+    setSelectedTaskId(prevSelectedId => (prevSelectedId === taskId ? null : taskId));
   };
 
   // NEW FUNCTION: Handle starting the edit process
@@ -126,24 +149,51 @@ export default function ChecklistApp() {
               {theme === 'system' && <Laptop className="h-5 w-5" />}
             </Button>
           </div>
-          <div className="flex w-full gap-2 mb-4 flex-shrink-0">
+          <div className="flex gap-2 mb-4 flex-shrink-0">
+            {/* The Input uses `flex-1` to take up all available space. No `w-full` needed. */}
             <Input
-              className="flex-1 w-full" 
-              placeholder="Enter task..."
+              className="flex-1 w-full"
+              placeholder="Enter a task (min 10 chars)..."
               value={newTask}
               onChange={(e) => setNewTask(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && addTask()}
             />
             <Button onClick={addTask}>Add</Button>
+            {selectedTaskId && (
+              <Button variant="destructive" onClick={deleteTask} className="flex items-center gap-2">
+                <Trash2 className="h-4 w-4" />
+                Delete
+              </Button>
+            )}
           </div>
-
-          <div className="space-y-2 mt-4">
+          <div
+            className="space-y-2 mt-4 flex-grow overflow-y-auto pr-2"
+            onClick={() => setSelectedTaskId(null)} // Click the background to deselect all
+          >
             {tasks.map(task => (
-              <div key={task.id} className="flex items-center gap-2 rounded hover:bg-gray-50 dark:hover:bg-gray-800 px-5 py-2"> {/* ADDED PADDING */}
-                <Checkbox checked={task.done} onCheckedChange={() => toggleTask(task.id)} />
+              <div
+                key={task.id}
+                // This uses clsx to conditionally apply highlighting
+                className={clsx(
+                  "flex items-center gap-4 p-3 rounded cursor-pointer", // Base styles
+                  {
+                    'bg-accent text-accent-foreground': selectedTaskId === task.id, // Highlight styles
+                    'hover:bg-muted': selectedTaskId !== task.id // Hover style only if not selected
+                  }
+                )}
+                onClick={(e) => {
+                  e.stopPropagation(); // This is CRITICAL. It prevents the background click from firing.
+                  handleSelectTask(task.id);
+                }}
+              >
+                <Checkbox
+                  checked={task.done}
+                  onCheckedChange={() => toggleTask(task.id)}
+                  className="h-5 w-5 rounded-none" 
+                />
                 {editingTaskId === task.id ? (
                   <Input
-                    className="flex-1 h-1 py-1"
+                    className="flex-1 h-auto py-1 bg-transparent"
                     value={editingTaskText}
                     onChange={(e) => setEditingTaskText(e.target.value)}
                     onKeyDown={handleEditKeyDown}
@@ -152,8 +202,11 @@ export default function ChecklistApp() {
                   />
                 ) : (
                   <span
-                    className={`flex-1 text-left break-words ${task.done ? 'line-through text-gray-400' : 'cursor-pointer'}`} // ADDED text-left and break-words
-                    onDoubleClick={() => handleEditStart(task)}
+                    className={`flex-1 text-left break-words ${task.done ? 'line-through text-muted-foreground' : ''}`}
+                    onDoubleClick={(e) => {
+                      e.stopPropagation(); // Also critical here to prevent selection change
+                      handleEditStart(task);
+                    }}
                   >
                     {task.text}
                   </span>
@@ -161,7 +214,7 @@ export default function ChecklistApp() {
               </div>
             ))}
             {tasks.length === 0 && (
-              <p className="text-sm text-gray-500 text-center">No tasks yet. Add one above.</p>
+              <p className="text-sm text-muted-foreground text-center pt-4">No tasks yet. Add one above.</p>
             )}
           </div>
         </CardContent>
